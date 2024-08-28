@@ -58,6 +58,8 @@ def create_tables():
             cur.execute("""
                         ALTER TABLE users ADD COLUMN IF NOT EXISTS registration_request_id INTEGER REFERENCES user_registration_requests(id) ON DELETE CASCADE;
                     """)
+            cur.execute("""ALTER TABLE users ADD COLUMN IF NOT EXISTS name VARCHAR(250);""")           
+            cur.execute("""ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(250);""") 
                                     
             cur.execute("""
                 ALTER TABLE users
@@ -104,7 +106,6 @@ def create_tables():
                 );
                 """)
             cur.execute("""ALTER TABLE businesses ADD COLUMN IF NOT EXISTS email VARCHAR(100);""")
-            # Add the category column to the businesses table
             cur.execute("""ALTER TABLE businesses ADD COLUMN IF NOT EXISTS category VARCHAR(100);""")
 
             # Populate the category column in the businesses table with data from business_registration_requests

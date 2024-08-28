@@ -505,37 +505,6 @@ def upload_file(file):
 
 
 
-@app.route('/upload_media', methods=['POST'])
-def upload_media():
-    if 'user_logged_in' not in session:
-        return redirect(url_for('user_login'))
-    
-    business_id = request.form.get('business_id')
-    media_type = request.form.get('media_type')
-    media_url = request.form.get('media_url')
-
-    
-    conn = get_db_connection()
-    if conn:
-        try:
-            cur = conn.cursor()
-            cur.execute("""
-                INSERT INTO images_videos (business_id, media_type, media_url)
-                VALUES (%s, %s, %s)
-            """, (business_id, media_type, media_url))
-            conn.commit()
-            cur.close()
-            flash('Media uploaded successfully.', 'success')
-        except psycopg2.Error as e:
-            flash(f"Error occurred during media upload: {e}", 'error')
-        finally:
-            conn.close()
-    
-    return redirect(url_for('user_business_profile'))
-
-
-
-
 
 ## User Update Profile ##
 
@@ -609,7 +578,7 @@ def update_profile():
                     print("session-before", session['avatar'] )
                     # Update the profile_image column in the database
                     cur.execute("UPDATE users SET profile_image = %s WHERE id = %s", (file_path, user_id))
-                    session['avatar'] = file_path
+                    session['avatar'] = file_path # re-assigning the image to the new image that was uploaded by the user, so that the user dont need to logout and login before the profile image will show on the navbar
                     print("session-after", session['avatar'] )
                 conn.commit()
                 flash('Profile updated successfully!', 'success')

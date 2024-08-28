@@ -29,6 +29,12 @@
 
 </head>
 
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+
 <body>
     <!-- Your HTML content here -->
     <!-- Display flash messages -->
@@ -62,9 +68,10 @@
             <div class="row">
                 <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
                     <div class="d-inline-flex align-items-center">
-                        <p><i class="fa fa-envelope mr-2"></i> instructor@dunistech.ng</p>
+                        <p><i class="fa fa-envelope mr-2"></i> <a
+                                href="mailto:+2347032276597">instructor@dunistech.ng</a></p>
                         <p class="text-body px-3">|</p>
-                        <p><i class="fa fa-phone-alt mr-2"></i>+012 345 6789</p>
+                        <p><i class="fa fa-phone-alt mr-2"></i><a href="tel:+2347032276597">+234 703 227 6597</a></p>
                     </div>
                 </div>
                 <div class="col-lg-6 text-center text-lg-right">
@@ -115,7 +122,7 @@
                             <a href="{{ url_for('index') }}" class="nav-link active">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="about.html" class="nav-link">About</a>
+                            <a href="#about" class="nav-link">About</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link" id="" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -131,7 +138,7 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a href="contact.html" class="nav-link">Contact</a>
+                            <a href="#contact" class="nav-link">Contact</a>
                         </li>
                     </ul>
                     {% if session.get('user_logged_in') %}
@@ -182,13 +189,13 @@
 
     {% endblock %}
 
-
+    <div id="contact"></div>
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
         <div class="row pt-5">
             <div class="col-lg-4 col-md-6 mb-5">
                 <a href="" class="navbar-brand">
-                    <h1 class="text-primary"><span class="text-white">Efe</span>Zino</h1>
+                    <h1 class="text-primary"><span class="text-white"> Dunis</span>Tech.</h1>
                 </a>
                 <p>>Discover how our directory has helped businesses like yours grow and succeed. Read their stories and
                     get inspired.</p>
@@ -211,9 +218,11 @@
             </div>
             <div class="col-lg-4 col-md-6 mb-5">
                 <h5 class="text-white text-uppercase mb-4" style="letter-spacing: 5px;">Contact Us</h5>
-                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
-                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
-                <p><i class="fa fa-envelope mr-2"></i> instructor@dunistech.ng</p>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>GRACELAND ESTATE, 1 Gbade Amao St, <br> Ajiwe, Lekki 3,
+                    Lagos</p>
+                <p><i class="fa fa-phone-alt mr-2"></i><a href="tel:+2347032276597">+234 703 227 6597</a></p>
+                <p><i class="fa fa-envelope mr-2"></i><a
+                        href="mailto:instructor@dunistech.ng">instructor@dunistech.ng</a> </p>
                 <h6 class="text-white text-uppercase mt-4 mb-3" style="letter-spacing: 5px;">Newsletter</h6>
                 <div class="w-100">
                     <div class="input-group">
