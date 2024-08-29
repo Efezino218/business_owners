@@ -6,18 +6,18 @@
     <div class="requests-container">
         <div class="request-box red">
             <i class="fas fa-user-plus"></i>
-            <p>Pending Business Owner Signin</p>
+            <p>Pending Users Signin</p>
             <span class="count">{{ pending_user_registration_request_count }}</span>
         </div>
         <div class="request-box green">
             <i class="fas fa-briefcase"></i>
-            <p>Pending Business Owner To Be Approved</p>
-            <span class="count">{{ pending_business_registration_requests_count }}</span>
+            <p>Pending Users To Be Approved</p>
+            <span class="count">{{ pending_approved_user_count }}</span>
         </div>
         <div class="request-box blue">
             <i class="fas fa-user-check"></i>
             <p>Pending Business To Be Processed</p>
-            <span class="count">{{ pending_approved_user_count }}</span>
+            <span class="count">{{ pending_business_registration_requests_count }}</span>
         </div>
         <div class="request-box yellow">
             <i class="fas fa-briefcase"></i>

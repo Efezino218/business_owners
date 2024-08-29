@@ -1,0 +1,53 @@
+            STEP TO CREATE REQUIREMENT.TXT Files
+
+# pip freeze >> requirements.txt : This commad is use to create requirements.txt file automatically.
+# cat requirements.txt : This command is use to show the list of requirement that is workin on your app.
+                OR u Can Use:
+# type requirements.txt : This command is use to show the list of requirement that is workin on your app.
+
+# pip install -r requirementx.txt : This command is use to install the requirements.txt file, so that developer dont need to install them one by 
+
+
+
+
+____________________________________________________________________
+
+     =========STEP BY STEP TO GREATE .GITIGNORE FILE==========
+__________________________________________________________________
+
+1. Navigate to Your Project Directory
+First, you need to navigate to your project directory (C:\DUNIS_PROJECTS\buz_owners) in your bash terminal. Here’s how you do it:
+
+cd /c/DUNIS_PROJECTS/buz_owners
+
+2. Activate Your Virtual Environment (If Needed)
+source venv/Scripts/activate
+
+
+3. Create .gitignore File
+ # touch .gitignore : this is a command to create .gitignore file
+
+
+4. Add Files and Folders to Ignore
+
+file.txt :      to ignore a files named file.txt or any files at all.
+
+# Ignore the virtual environment folder
+venv/ :         To Ignore a Specific Directory  you add a slash at the end:
+
+# Ignore Python cache files
+__pycache__/ :      To Ignore a Specific Directory  you add a slash at the end:
+
+# Ignore environment variables
+.env:           Ignore a Hidden File: To ignore a hidden file like .env
+
+# Ignore log files
+*.log:          Ignore All Files with a Certain Extension To ignore all .log files
+
+
+#------Understanding .gitignore Patterns:--------#
+    i. Ignore the Virtual Environment Folder:  venv/
+    ii. Ignore Python Cache Folder:  __pycache__/
+    iii. Ignore Log Files:  *.log
+            This * log pattern tells Git to ignore all files with a .log extension. Log files are 
+            often generated during runtime and are not necessary for version control.

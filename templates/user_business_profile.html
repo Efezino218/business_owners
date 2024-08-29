@@ -167,11 +167,37 @@
         {% endfor %}
     </div>
 
-    <div class="text-center mt-4">
-        <a href="" class="btn btn-primary">Edit Profile</a>
-    </div>
 </div>
 {% endif %}
+
+
+
+
+
+
+{% if pending_businesses %}
+<div class="container">
+    <div>
+        <h2 style="color: #6d6d6d;">Pending Business Requests</h2>
+        <ul style="color: gray;">
+            {% for business in pending_businesses %}
+            <li>
+                <h3 style="color: gray;">{{ business[1] }} (Pending Approval)</h3>
+                <p>Shop No: {{ business[2] }}</p>
+                <p>Phone Number: {{ business[3] }}</p>
+                <p>Description: {{ business[4] }}</p>
+                <p>Request Date: {{ business[5] }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No pending business requests.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+
 
 
 
@@ -225,22 +251,6 @@
 <p>You have not registered any businesses yet.</p>
 {% endif %}
 
-{% if pending_businesses %}
-<h2>Pending Business Requests</h2>
-<ul>
-    {% for business in pending_businesses %}
-    <li>
-        <h3>{{ business[1] }} (Pending Approval)</h3>
-        <p>Shop No: {{ business[2] }}</p>
-        <p>Phone Number: {{ business[3] }}</p>
-        <p>Description: {{ business[4] }}</p>
-        <p>Request Date: {{ business[5] }}</p>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No pending business requests.</p>
-{% endif %}
 
 <a href="{{ url_for('index') }}">Back to Home</a>
 #}

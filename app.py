@@ -1496,6 +1496,86 @@ def view_user_businesses(user_id):
 
 
 
+
+# @app.route('/admin/business/<int:business_id>/update', methods=['GET', 'POST'])
+# def update_business(business_id):
+#     if 'admin_logged_in' not in session or not session.get('admin_logged_in'):
+#         return redirect(url_for('user_login'))
+    
+#     conn = get_db_connection()
+#     user_id = None
+
+#     if request.method == 'POST':
+#         business_name = request.form['business_name']
+#         shop_no = request.form['shop_no']
+#         phone_number = request.form['phone_number']
+#         description = request.form['description']
+#         email = request.form['email']
+#         category = request.form.get('category', '')  # Empty string as default
+#         is_subscribed = request.form.get('is_subscribed') == 'on'
+
+#         try:
+#             cur = conn.cursor()
+
+#             # Get the user_id and old category before updating the business
+#             cur.execute("SELECT owner_id FROM businesses WHERE id = %s", (business_id,))
+#             result = cur.fetchone()
+#             user_id = result[0]
+
+#             # Update the business details (without the category for now)
+#             cur.execute("""
+#                 UPDATE businesses
+#                 SET business_name = %s, shop_no = %s, phone_number = %s, description = %s, email = %s, is_subscribed = %s
+#                 WHERE id = %s
+#             """, (business_name, shop_no, phone_number, description, email, is_subscribed, business_id))
+
+#             # Handle category update
+#             if category:
+#                 # Check if the category already exists
+#                 cur.execute("SELECT id FROM categories WHERE category_name = %s", (category,))
+#                 category_result = cur.fetchone()
+
+#                 if category_result:
+#                     category_id = category_result[0]
+#                 else:
+#                     # Insert new category if it doesn't exist
+#                     cur.execute("INSERT INTO categories (category_name) VALUES (%s) RETURNING id", (category,))
+#                     category_id = cur.fetchone()[0]
+
+#                 # Update the business with the new category ID
+#                 cur.execute("UPDATE businesses SET category = %s WHERE id = %s", (category_id, business_id))
+            
+#             else:
+#                 # If category is empty or None, set the category field to NULL
+#                 cur.execute("UPDATE businesses SET category = NULL WHERE id = %s", (business_id,))
+
+#             conn.commit()
+#             flash('Business updated successfully.', 'success')
+#             cur.close()
+#         except psycopg2.Error as e:
+#             flash(f"Database error: {e}", 'error')
+#         finally:
+#             conn.close()
+
+#         # Redirect to the user's business view route, passing the user_id
+#         return redirect(url_for('view_user_businesses', user_id=user_id))
+    
+#     cur = conn.cursor()
+#     cur.execute("SELECT * FROM businesses WHERE id = %s", (business_id,))
+#     business = cur.fetchone()
+#     user_id = business[1]  # Assuming owner_id is the second column in the businesses table
+#     cur.close()
+#     conn.close()
+
+#     if business:
+#         return render_template('admin_update_business.html', business=business)
+#     else:
+#         flash('Business not found.', 'error')
+#         return redirect(url_for('view_user_businesses', user_id=user_id))
+
+
+
+
 @app.route('/admin/business/<int:business_id>/update', methods=['GET', 'POST'])
 def update_business(business_id):
     if 'admin_logged_in' not in session or not session.get('admin_logged_in'):
@@ -1510,6 +1590,7 @@ def update_business(business_id):
         phone_number = request.form['phone_number']
         description = request.form['description']
         email = request.form['email']
+        category = request.form['category']
         is_subscribed = request.form.get('is_subscribed') == 'on'
 
         try:
@@ -1521,9 +1602,9 @@ def update_business(business_id):
             # Update the business details
             cur.execute("""
                 UPDATE businesses
-                SET business_name = %s, shop_no = %s, phone_number = %s, description = %s, email = %s, is_subscribed = %s
+                SET business_name = %s, shop_no = %s, phone_number = %s, description = %s, email = %s, is_subscribed = %s, category = %s
                 WHERE id = %s
-            """, (business_name, shop_no, phone_number, description, email, is_subscribed, business_id))
+            """, (business_name, shop_no, phone_number, description, email, is_subscribed, category, business_id))
             conn.commit()
             flash('Business updated successfully.', 'success')
             cur.close()

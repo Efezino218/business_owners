@@ -7,5 +7,10 @@ __pycache__/
 # Ignore environment variables
 .env
 
+# Ignore the file steps_to_create_gitignore_and_requirements.txt
+steps_to_create_gitignore_and_requirements.txt
+
+
+
 # Ignore log files
 *.log
