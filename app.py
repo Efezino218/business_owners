@@ -1,6 +1,8 @@
 from flask import Flask, request, redirect, url_for, render_template, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
+import mysql.connector
+from mysql.connector import Error
 from connect import get_db_connection  # Import the get_db_connection function
 from werkzeug.utils import secure_filename
 import re, os
@@ -625,12 +627,15 @@ def admin_login():
                 admin = cur.fetchone()
                 cur.close()
                 conn.close()
-                
+                print(admin)
+                # print(
+                #     "check_password_hash(admin[2], password)", check_password_hash(admin[2], password)
+                # )
                 if admin and check_password_hash(admin[2], password):  # Assuming password is in the 3rd column
                     session['admin_logged_in'] = True
                     session['admin_id'] = admin[0]  # Store admin id in the session
                     session['admin_username'] = admin[1]  # Store admin Username in the session
-                    session['admin_profile_pic'] = admin[4]  # Store admin profile_pic in the session
+                    session['admin_profile_pic'] = admin[3]  # Store admin profile_pic in the session
 
                     
                     flash('Admin has been login sucessful.', 'success')
@@ -971,7 +976,6 @@ def review_claim(request_id):
 
 
 
-
 @app.route('/process_business_registration', methods=['POST'])
 def process_business_registration():
     if 'admin_logged_in' not in session:
@@ -991,34 +995,44 @@ def process_business_registration():
     conn = get_db_connection()
     try:
         cur = conn.cursor()
-        
+
         # Check if the category already exists
         cur.execute("SELECT id FROM categories WHERE category_name = %s", (category_name,))
         category = cur.fetchone()
         
         # If the category does not exist, insert it
         if category is None:
-            cur.execute("INSERT INTO categories (category_name) VALUES (%s) RETURNING id", (category_name,))
+            cur.execute("INSERT INTO categories (category_name) VALUES (%s)", (category_name,))
+            conn.commit()  # Commit to generate the ID
+            cur.execute("SELECT LAST_INSERT_ID()")
             category_id = cur.fetchone()[0]
+            print(f"Inserted new category with ID: {category_id}")
         else:
             category_id = category[0]
-        
+            print(f"Found existing category with ID: {category_id}")
+
         # Insert the new business with the correct owner_id and email
         cur.execute("""
             INSERT INTO businesses (owner_id, business_name, shop_no, phone_number, description, block_num, email, category)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """, (user_id, business_name, shop_no, phone_number, description, block_num, email, category_name))
+        conn.commit()  # Commit to generate the ID
+        cur.execute("SELECT LAST_INSERT_ID()")
         business_id = cur.fetchone()[0]
-        
+        print(f"Inserted new business with ID: {business_id}")
+
         # Link the business with its category
         cur.execute("INSERT INTO business_categories (business_id, category_id) VALUES (%s, %s)", (business_id, category_id))
-        
+        conn.commit()
+        print(f"Linked business ID {business_id} with category ID {category_id}")
+
         # Update the registration request to mark it as processed
         cur.execute("UPDATE business_registration_requests SET processed = TRUE WHERE business_name = %s", (business_name,))
-        
         conn.commit()
+        print(f"Marked business registration '{business_name}' as processed.")
+
         flash('Business registered successfully and registration request marked as processed.', 'success')
-    except psycopg2.Error as e:
+    except mysql.connector.Error as e:
         flash('Error occurred during business registration.', 'error')
         print(f"Database error: {e}")
     finally:
@@ -1026,6 +1040,7 @@ def process_business_registration():
         conn.close()
     
     return redirect(url_for('admin_dashboard'))
+
 
 
 
